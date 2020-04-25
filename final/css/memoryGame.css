@@ -1,0 +1,40 @@
+body{
+    background-image:url('../media/cranium.png');
+    background-size: 100%;
+    background-image: cover;
+    background-repeat: no-repeat;    
+    text-align: center;
+}
+img{
+    margin:10px;
+}
+h1{
+    background-color: rgba(32, 178, 171, 0.384);
+    margin:auto;
+    width: 35%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 4em;
+    
+}
+div{
+    margin: auto;
+    background-color: rgba(255, 250, 205, 0.377);
+    border-radius: 20px;
+    width: 35%;
+}
+aside{
+    float: right;
+    margin-right: 3%;
+    margin-top:10%;
+    font-size: 3em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: rgba(165, 42, 42, 0.774);
+    width: 25%;
+
+}
+table{
+    margin:auto;
+}
+footer{
+    margin-bottom: 2%;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Hang Man Game</title>
+<style>
+
+
+
+</style>
+</head>
+<header>
+<h1 id="header">Memory Game</h1>
+</header>
+<body>
+
+
+<div id="area">
+        
+        
+</div>
+<script>
+
+
+let imgArray = [];
+
+// choose images out of 20 to create 12 random appended children in div/a
+for(i=0; i<12; i++){
+    rand = Math.floor(Math.random()*(20 - 1 + 1) +1); 
+    // to see which random number happens
+    console.info("random: ", rand);
+    
+
+    //create link
+    link = document.createElement( 'a' );    
+    link.setAttribute('href','#');
+    link.setAttribute('id', i);     
+
+    //create image for link    
+    img = document.createElement( 'img' );
+    img.alt = "image " + i;    
+    img.src = "array/img" + rand + ".png";    
+    img.id = "pic" + rand;
+
+    //append link 
+    document.getElementById("area").appendChild(link);
+    // append child
+    document.getElementById(i).appendChild(img);
+    // add image id to an array 
+    imgArray.push("pic" + rand);
+
+    // info on elements
+    console.info("link ID: ", document.getElementById(i).id);
+    console.info("image name ",document.getElementById("pic" + rand).src)
+    console.info("pic ID: ", document.getElementById("pic" + rand).id);
+    
+    
+}
+
+
+// Function to wait 3 seconds and then hide images/replace images with pick.png
+// I did it this way to maintain the the same corresponging ID's to use to compare later
+// I couldn't think of a better way to connect matching pictures with eachother 
+
+var setIntrvl = setInterval(Hide, 3000);
+
+// info about array
+
+for(t=0; t<imgArray.length; t++){
+        console.info("imgArray: ", imgArray[t]);
+    }
+// "changer" function 
+
+function Hide(){            
+    for(i=0; i<imgArray.length; i++){
+        document.getElementById(imgArray[i]).src = 'array/pick.png';
+       console.info("changer: ", imgArray[i]);
+       clearInterval(setIntrvl);
+    }
+}
+
+// document.getElementById(imgArray[0]).src = 'array/pick.png';
+// document.getElementById(imgArray[1]).src = 'array/pick.png';
+// document.getElementById(imgArray[2]).src = 'array/pick.png';
+// document.getElementById(imgArray[3]).src = 'array/pick.png';
+// document.getElementById(imgArray[4]).src = 'array/pick.png';
+// document.getElementById(imgArray[5]).src = 'array/pick.png';
+// document.getElementById(imgArray[6]).src = 'array/pick.png';
+// document.getElementById(imgArray[7]).src = 'array/pick.png';
+// document.getElementById(imgArray[8]).src = 'array/pick.png';
+// document.getElementById(imgArray[9]).src = 'array/pick.png';
+// document.getElementById(imgArray[10]).src = 'array/pick.png';
+// document.getElementById(imgArray[11]).src = 'array/pick.png';
+// document.getElementById(imgArray[12]).src = 'array/pick.png';
+
+
+
+
+
+
+
+
+            
+
+            
+
+
+
+
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+<footer>
+
+</footer>
+</html>

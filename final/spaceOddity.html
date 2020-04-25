@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600&display=swap" rel="stylesheet"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+body{
+    background:url('media/page.jpg');
+    background-image: cover;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    font-family: 'Exo 2', sans-serif;
+}
+canvas {
+    
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+    margin-bottom: 20px;
+    
+}
+h1{
+    text-align: center;
+    font-size:3em;
+    color:rgb(27, 0, 182);    
+    font-family: 'Exo 2', sans-serif;
+    text-shadow: 2px 2px cornsilk;
+}
+div{
+    text-align: center;
+}
+#info{
+    font-size: 1em;
+    background-color: purple;
+    border: solid 1px #d3d3d3;
+    border-radius: 10px;
+    margin-right: 42%;
+    margin-left: 42%;
+}
+button{
+    width: 200px;
+    height: 80px;
+    border:2px solid beige ;
+    border-radius: 10px;
+    background-color: blue;
+    color: beige;
+    font-size: 2em;
+    font-family: 'Exo 2', sans-serif;
+    margin: 20px;
+}
+footer{
+    color: white;
+    text-align: center;
+    margin-bottom: 10%;
+}
+</style>
+</head>
+<body>
+    <h1>Space Oddity Game</h1>
+    <div style="margin-top: 100px;">
+        <button id="start" onclick="startGame()">START GAME</button>
+    </div>
+    <div id="canvasDiv">
+        <canvas id="myCanvas"> Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
+    <div>
+            <button id="playAgain" onclick="location=URL">Play Again</button>
+        </div>
+<script>
+
+// game components
+var myGamePiece;
+var myBackground;
+var myObstacles = [];
+var bonus = [];
+var myScore;
+var gameOverSound;
+var myGameMusic;
+var gameOverText= [];
+
+
+
+document.getElementById("playAgain").style.visibility = "hidden";
+document.getElementById("canvasDiv").style.visibility = "hidden";
+
+
+
+function startGame() {
+    
+    document.getElementById("canvasDiv").style.visibility = "visible";
+    document.getElementById("playAgain").style.visibility = "hidden";  
+    document.getElementById("start").style.visibility = "hidden";    
+    myGamePiece = new component(150, 150, "media/lunar.png", 10, 250, "image");
+    myBackground = new component(900, 600, "media/background.png", 0, 0, "background")
+    myScore = new component("30px", "Consolas", "white", 10, 30, "text");
+    gameOverSound = new sound("media/lose.wav");
+    scoreSound = new sound("media/score.wav");
+    myGameMusic = new sound("media/space.mp3");
+    gameOverText = new component("70px", "Orbitron", "white", 210, 320, "text");
+    
+    myGameMusic.play();
+    myGameArea.start();
+}
+
+// creates a canvas which is the game area
+var myGameArea = {
+    canvas : document.getElementById("myCanvas"),
+    start : function() {
+        this.canvas.width = 900;
+        this.canvas.height = 600;
+        this.context = this.canvas.getContext("2d");
+        //document.body.innerHTML(this.canvas, document.div.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+
+        // cheks if a key is pressed
+        window.addEventListener('keydown', function(e){
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = true;
+        })
+        window.addEventListener('keyup', function(e){
+            myGamePiece.image.src = "media/lunar.png";
+            myGameArea.keys[e.keyCode] = false;
+        })
+
+        },
+
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+
+    stop : function() {
+        clearInterval(this.interval);
+    }
+}
+
+function sound(src){
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    if(src == "media/space.mp3"){
+        this.sound.setAttribute("loop", true);
+    }
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+// function creating the attributes for each component
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    if (type == "image" || type == "background") {
+        this.image = new Image();
+        this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (type == "image" || type == "background") {
+            ctx.drawImage(this.image, 
+                this.x, 
+                this.y,
+                this.width, this.height);
+            if(type == "background"){
+                ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+            }
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+        if(this.type == "text"){
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        }
+    }
+
+    // function to change the x and y positions
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;     
+        
+        // checks if the x position has reach the end of the image
+        if(this.type == "background"){
+            if(this.x == -(this.width)){
+                this.x = 0;
+            }
+        }   
+    }
+
+    // function that returns boolean value for if the game piece crashed with game obstacles
+    this.crashWith = function(otherobj){
+        var myLeft = this.x;
+        var myRight = this.x + (this.width);
+        var myTop = this.y;
+        var myBottom = this.y + (this.height);
+        var otherLeft = otherobj.x;
+        var otherRight = otherobj.x + (otherobj.width);
+        var otherTop = otherobj.y;
+        var otherBottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if((myBottom < otherTop) ||
+            (myTop > otherBottom) ||
+            (myRight < otherLeft) ||
+            (myLeft > otherRight)){
+            
+            crash = false;
+        }
+        return crash;
+    }
+}
+    //function creating objects in game
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;    
+    for(i = 0; i < myObstacles.length; i += 1){
+        if(myGamePiece.crashWith(myObstacles[i])){
+            myGameMusic.stop();
+            gameOverSound.play();
+            myGameArea.stop();
+            myGameArea.clear();
+            myBackground.update();
+            myScore.text = "SCORE: " + myGameArea.frameNo;
+            myScore.update();
+            gameOverText.text = "GAME OVER";
+            gameOverText.update();
+            document.getElementById("playAgain").style.visibility = "visible";
+            sessionStorage.previousScore = myGameArea.frameNo;
+
+ 
+            return;
+        }
+        
+    }
+    
+    // calculation for bonus
+    for(i = 0; i < bonus.length; i += 1){
+        if(myGamePiece.crashWith(bonus[i])){
+            myGameArea.frameNo += 3000;
+            bonus.pop();
+            scoreSound.play();            
+                
+             
+            
+        }
+        
+    }
+
+
+    myGameArea.clear();
+    myBackground.speedX = -1;
+    myBackground.newPos();
+    myBackground.update();
+
+    myGameArea.frameNo += 1;
+
+
+    // creates obstacles with random trajectories
+    if(everyInterval(90)){
+        x = myGameArea.canvas.width;
+        minHeight = 10;
+        maxHeight = 550;
+        height = Math.floor(Math.random()*(maxHeight - minHeight + 1) +minHeight);        
+        direction2 = Math.trunc(Math.random()*(9)-5);
+        size = Math.trunc(Math.random()*100)+30;
+        number = Math.trunc(Math.random()*(5 - 1) -5);        
+        myObstacles.push(new component(size, size, "media/rock.png", x, height, "image"));        
+    }
+    
+   for(i = 0; i < myObstacles.length; i += 1){
+        myObstacles[i].y += direction2;
+        myObstacles[i].x += -10;
+        myObstacles[i].update();
+    }
+    // creates bonus with random trajectories
+    if(everyInterval(200)){
+        x = myGameArea.canvas.width;
+        minHeight = 10;
+        maxHeight = 550;
+        height = Math.floor(Math.random()*(maxHeight - minHeight + 1) +minHeight);        
+        direction1 = Math.trunc(Math.random()*(9)-5);
+        size = Math.trunc(Math.random()*100)+30;
+        number = Math.trunc(Math.random()*(5 - 1) -5);            
+        bonus.push(new component(70, 70, "media/bonus.png", x, height, "image"));        
+    }
+
+    for(i = 0; i < bonus.length; i += 1){
+        bonus[i].y += direction1;
+        bonus[i].x += -5;
+        bonus[i].update();
+    }
+
+    // update the score
+    myScore.text = "SCORE: " + myGameArea.frameNo;
+    myScore.update();
+    if(sessionStorage.previousScore == undefined){
+        document.getElementById("previous").innerHTML = "Previous game Score: 0";
+    }
+    else{
+        document.getElementById("previous").innerHTML = "<p>Previous game Score: " + sessionStorage.previousScore ;
+    }
+    myGamePiece.speedX = 0; 
+    myGamePiece.speedY = 0; 
+    if(myGameArea.keys && myGameArea.keys[37]){myGamePiece.speedX = -3; myGamePiece.image.src = "media/lunarLeft.png";} //move left
+    if(myGameArea.keys && myGameArea.keys[39]){myGamePiece.speedX = 3;  myGamePiece.image.src = "media/lunarRight.png";} // move right
+    if(myGameArea.keys && myGameArea.keys[38]){myGamePiece.speedY = -3; myGamePiece.image.src = "media/lunarBurn.png";} // move up
+    if(myGameArea.keys && myGameArea.keys[40]){myGamePiece.speedY = 3;  myGamePiece.image.src = "media/lunarDown.png";} // move down
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+
+
+function everyInterval(n){
+    if((myGameArea.frameNo / n) % 1 == 0) {return true;}
+        return false;
+}
+</script>
+
+<div id="info">
+<p>Use arrow keys to avoid asteroids</p>
+<p>Hit Bonus Points to add 3000 Points</p>
+<p id="previous"></p>
+</div>
+</body>
+<footer>
+    <p>Created by Joshua Paul, 2020, NMC &copy;</p>
+</footer>
+</html>

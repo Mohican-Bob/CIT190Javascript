@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Hang Man Game</title>
+<link rel="stylesheet" type="text/css" href="css/hangMan.css">
+</head>
+<header>
+<h1 id="header">Hang Man</h1>
+</header>
+<body>
+    <aside>
+        <p>Guess letters to solve the word, but be careful. Word on the street is the man's innocent.</p>
+    </aside>
+    <div id="gallow">
+    <p id="tries"></p>
+    <img id="seven" src="media/seven.png" alt="seven">
+    <img id="six" src="media/six.png" alt="six">
+    <img id="five" src="media/five.png" alt="five">
+    <img id="four" src="media/four.png" alt="four">
+    <img id="three" src="media/three.png" alt="three">
+    <img id="two" src="media/two.png" alt="two">
+    <img id="one" src="media/one.png" alt="one">
+    </div>
+    <div id="word">
+        <textarea id="j"></textarea>
+        <textarea id="a"></textarea>
+        <textarea id="v"></textarea>
+        <textarea id="a2"></textarea>
+        <textarea id="s"></textarea>
+        <textarea id="c"></textarea>
+        <textarea id="r"></textarea>
+        <textarea id="i"></textarea>
+        <textarea id="p"></textarea>
+        <textarea id="t"></textarea>
+    </div>
+    <form action="" id="try">
+		<p style="text-align:left;">
+			<label class="labelDisplay" for="try">Try a letter</label><input class="formEntry" type="text" id="letter" value="" size="10" style="text-align:center;"/>
+		
+		<button class="inputButton" type="button" id="check">Check</button>			
+    </form>
+    <script src="js/hangMan.js"></script> 
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+<footer>
+
+</footer>
+</html>

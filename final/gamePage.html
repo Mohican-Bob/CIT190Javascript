@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Games Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600&display=swap" rel="stylesheet"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" type="text/css" href="css/gamePage.css">
+
+</head>
+<body>
+    
+<header>
+    <h1>Javascript Games!</h1>
+    
+</header>
+
+<section>
+    <article>
+        <p>Below are three games created in javascript. Play Play Play!</p>
+        <p id="info"></p>
+    </article>
+    <div>
+        <button id="oddity" onclick="window.location.href = 'spaceOddity.html';">Space Oddity</button>
+        <button id="hangMan" onclick="window.location.href = 'hangMan.html';">Hang Man</button>
+        <button id="memory" onclick="window.location.href = 'memoryGame.html';">Memory</button>
+    </div>
+</section>
+
+</body>
+<footer>
+<p>Created by Joshua Paul 2020 NMC &copy;</p>
+<a id="faqs" href="#">faqs</a>
+
+<script>
+    document.getElementById("oddity").addEventListener("mouseover", Oddity);
+    document.getElementById("hangMan").addEventListener("mouseover", HangMan);
+    document.getElementById("memory").addEventListener("mouseover", Memory);
+
+    function Oddity() {
+        document.getElementById("info").innerHTML = "<p>Dodge Astroids while hitting Bonus Points for a higher score!</p>";
+    }
+    function HangMan() {
+        document.getElementById("info").innerHTML = "<p>Guess the word before you commit the ultimate sin!</p>";
+    }
+    function Memory() {
+        document.getElementById("info").innerHTML = "<p>Be quick with your eyes and try to match the images!</p>";
+    }
+    document.getElementById("faqs").addEventListener("click", function(){
+        alert("Welcome to my home page of javascript Games! inside these links are three grames: Space Oddity, Hangman, and a Memory game. Good for all audiences. all games and content Copyright 2020 Joshua Paul.");
+    })
+</script>
+</footer>
+</html>
